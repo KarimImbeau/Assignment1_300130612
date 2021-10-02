@@ -3,6 +3,7 @@
 // license found at http://www.site.uottawa.ca/school/research/lloseng/
 
 import java.io.*;
+import java.sql.Timestamp;
 
 /**
  * This class prompts the user for a set of coordinates, and then 
@@ -18,10 +19,10 @@ public class PointCPTest
   //Class methods *****************************************************
 
   /**
-   * This method is responsible for the creation of the PointCP
+   * This method is responsible for the creation of the PointCP2
    * object.  This can be done in two ways; the first, by using the
    * command line and running the program using <code> java 
-   * PointCPTest &lt;coordtype (c/p)&gt; &lt;X/RHO&gt; &lt;Y/THETA&gt;
+   * PointCP2Test &lt;coordtype (c/p)&gt; &lt;X/RHO&gt; &lt;Y/THETA&gt;
    * </code> and the second by getting the program to prompt the user.
    * If the user does not enter a valid sequence at the command line,
    * the program will prompte him or her.
@@ -33,54 +34,77 @@ public class PointCPTest
    */
   public static void main(String[] args)
   {
-    PointCP point;
+	  PointCP2 point;
 
-    System.out.println("Cartesian-Polar Coordinates Conversion Program");
+	  System.out.println("Cartesian-Polar Coordinates Conversion Program");
 
-    // Check if the user input coordinates from the command line
-    // If he did, create the PointCP object from these arguments.
-    // If he did not, prompt the user for them.
-    try
-    {
-      point = new PointCP(args[0].toUpperCase().charAt(0), 
-        Double.valueOf(args[1]).doubleValue(), 
-        Double.valueOf(args[2]).doubleValue());
-    }
-    catch(Exception e)
-    {
-      // If we arrive here, it is because either there were no
-      // command line arguments, or they were invalid
-      if(args.length != 0)
-        System.out.println("Invalid arguments on command line");
+	  // Check if the user input coordinates from the command line
+	  // If he did, create the PointCP2 object from these arguments.
+	  // If he did not, prompt the user for them.
+	  try
+	  {
+		  point = new PointCP2(args[0].toUpperCase().charAt(0), 
+				  Double.valueOf(args[1]).doubleValue(), 
+				  Double.valueOf(args[2]).doubleValue());
+	  }
+	  catch(Exception e)
+	  {
+		  // If we arrive here, it is because either there were no
+		  // command line arguments, or they were invalid
+		  if(args.length != 0)
+			  System.out.println("Invalid arguments on command line");
 
-      try
-      {
-        point = getInput();
-      }
-      catch(IOException ex)
-      {
-        System.out.println("Error getting input. Ending program.");
-        return;
-      }
-    }
-    System.out.println("\nYou entered:\n" + point);
-    point.convertStorageToCartesian();
-    System.out.println("\nAfter asking to store as Cartesian:\n" + point);
-    point.convertStorageToPolar();
-    System.out.println("\nAfter asking to store as Polar:\n" + point);
+		  try
+		  {
+			  point = getInput();
+		  }
+		  catch(IOException ex)
+		  {
+			  System.out.println("Error getting input. Ending program.");
+			  return;
+		  }
+	  }
+	  System.out.println("\nYou entered:\n" + point);
+	  point.convertStorageToCartesian();
+	  System.out.println("\nAfter asking to store as Cartesian:\n" + point);
+	  point.convertStorageToPolar();
+	  System.out.println("\nAfter asking to store as Polar:\n" + point);
+	  Timestamp time1 = new Timestamp(System.currentTimeMillis());
+
+	  for (int i = 0 ; i<100000000 ; i++){
+		  point.convertStorageToCartesian();
+		  point.convertStorageToPolar();
+	  }
+
+	  Timestamp time2 = new Timestamp(System.currentTimeMillis());
+
+	  System.out.println("\nAfter 100000000 iterations:\n" + point);
+	  System.out.println("\n:elapse time: " + (time2.getTime() - time1.getTime()) + " ms\n");
+
+
+	  PointCP2 point1;
+	  Timestamp time3 = new Timestamp(System.currentTimeMillis());
+	  for (int i = 0 ; i<100000000 ; i++) {
+		  point1 = new PointCP2('C', 3, 3);
+	  }
+	  Timestamp time4 = new Timestamp(System.currentTimeMillis());
+
+	  System.out.println("\nAfter 100000000 iterations of allocations:\n" + point);
+	  System.out.println("\n:elapse time: " + (time4.getTime() - time3.getTime()) + " ms\n");
+
   }
 
   /**
    * This method obtains input from the user and verifies that
-   * it is valid.  When the input is valid, it returns a PointCP
+   * it is valid.  When the input is valid, it returns a PointCP2
    * object.
    *
-   * @return A PointCP constructed using information obtained 
+   * @return A PointCP2 constructed using information obtained 
    *         from the user.
    * @throws IOException If there is an error getting input from
    *         the user.
    */
-  private static PointCP getInput() throws IOException
+  private static PointCP2 getInput() throws IOException
   {
     byte[] buffer = new byte[1024];  //Buffer to hold byte input
     boolean isOK = false;  // Flag set if input correct
@@ -157,7 +181,7 @@ public class PointCPTest
       //Reset flag so while loop will prompt for other arguments
       isOK = false;
     }
-    //Return a new PointCP object
-    return (new PointCP(coordType, a, b));
+    //Return a new PointCP2 object
+    return (new PointCP2(coordType, a, b));
   }
 }

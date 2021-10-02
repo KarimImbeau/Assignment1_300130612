@@ -1,0 +1,24 @@
+echo "design 1"
+cd 'design1(original)'
+javac PointCP.java PointCPTest.java
+java PointCPTest c 3 3
+cd ..
+
+echo "design 2"
+cd design2
+javac Point2CP.java PointCPTest.java
+java PointCPTest c 3 3
+cd ..
+
+echo "design 3"
+cd design3
+javac Point3CP.java PointCPTest.java
+java PointCPTest c 3 3
+cd ..
+
+echo "design 5"
+cd design5
+javac PointCP.java PointP.java PointC.java PointCPTest.java
+java PointCPTest c 3 3
+cd ..
+
